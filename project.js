@@ -42,13 +42,51 @@ console.log('Fibs recursion: ' + fibsRec(8));
 
 //Merge sort
 function mergeSort (arr) {
-    
+    if (arr.length <= 1) return arr;
+
+    let mid = arr.length / 2;
+    let left = [];
+    let right = [];
+
+    //Fill the left array
+    for (let i = 0; i < mid; i++) {
+        left[i] = arr[i];
+    }
+    //Fill the right array
+    for (let i = mid; i < arr.length; i++) {
+        right[i - mid] = arr[i];
+    }
+    //Could have acheived this with splice as well I suppose...
+
+    //Divide left and right until they meet base case (length <= 1)
+    left = mergeSort(left);
+    right = mergeSort(right);
+
+    return mergeTwoArrays(left, right);
+}
+
+//Take left and right, while they are not empty push lowest element into mergedArrs
+//Return
+function mergeTwoArrays (left, right) {
+    let mergedArrs = [];
+
+    while (left.length && right.length) {
+        //If left is smaller, push the first element from left and remove it from left
+        if (left[0] < right[0]) mergedArrs.push(left.shift());
+        else mergedArrs.push(right.shift());
+    }
+
+    console.log('mergedArrs: ' + mergedArrs);
+    console.log('left: ' + left);
+    console.log('right: ' + right);
+
+    return [...mergedArrs, ...left, ...right];
 }
 
 //
 
-console.log('Merge sort: ' + mergeSort([3, 2, 1, 13, 8, 5, 0, 1]))
+console.log('Merge sort 1: ' + mergeSort([3, 2, 1, 13, 8, 5, 0, 1]))
 //[0, 1, 1, 2, 3, 5, 8, 13]
 
-console.log('Merge sort: ' + mergeSort([105, 79, 100, 110]));
+console.log('Merge sort 2: ' + mergeSort([105, 79, 100, 110]));
 //[79, 100, 105, 110]
